@@ -1,17 +1,15 @@
 import React from 'react';
-import Login from './components/Login';
-import Presentation from './components/Presentation';
-import SignUp from './components/SignUp';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 
 const App = ()=>(
-	<div className="h-screen w-screen bg-green-600">
-		<div className="bg-banner bg-no-repeat bg-cover bg-center h-full">
-			<div className="grid grid-cols-2 gap-4 w-full place-items-center h-screen">
-				<Presentation/>
-				<SignUp/>
-			</div>
-		</div>
-	</div>
+	<Router>
+		<Switch>
+			<Route exact path="/" component={Home}/>
+			<Route path="/dashboard" component={Dashboard}/>
+		</Switch>	
+	</Router>
 );
 
 export default App;
