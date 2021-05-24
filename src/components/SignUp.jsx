@@ -2,6 +2,10 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import axios from 'axios';
+import {PATH_API, PATH_DASHBOARD} from '../routes/paths.routes';
+import Cookie from 'universal-cookie';
+import {useHistory} from 'react-router-dom';
 
 const schema = yup.object().shape({
     username: yup.string().required("username required"),
@@ -14,8 +18,16 @@ const SignUp = ({onClick})=>{
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(schema)
     });
+    let history = useHistory();
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = async data =>{
+        const res = await axios.post(`${PATH_API}/user/signup`, data);
+        const cookies = new Cookie();
+        cookies.set('auth', res.data.auth, {path: '/'});
+        cookies.set('token', res.data.token, {path: '/'});
+        cookies.set('user', res.data.username, {path: '/'});
+        history.push(`${PATH_DASHBOARD}`);
+    };
 
     return(
         <div className="w-2/5">

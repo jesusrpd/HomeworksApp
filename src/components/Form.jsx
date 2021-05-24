@@ -6,7 +6,7 @@ const Form = ()=>{
     const [form, setForm] = useState(false);
 
     const viewForm = v =>{
-        if (v === 'login') {
+        if (form) {
             setForm('signup');
         }else{
             setForm('login');
