@@ -6,6 +6,7 @@ import {PATH_API, PATH_DASHBOARD} from '../routes/paths.routes';
 import axios from 'axios';
 import Cookie from 'universal-cookie';
 import {useHistory} from 'react-router-dom';
+import auth from '../routes/auth';
 
 const schema = yup.object().shape({
     username: yup.string().required("Obligatory field"),
@@ -22,10 +23,12 @@ const Form = ({onClick})=>{
     const onSubmit = async data =>{
         const res = await axios.post(`${PATH_API}/user/login`, data);
         const cookies = new Cookie();
-        cookies.set('auht', res.data.auth, {path: '/'});
+        cookies.set('auth', res.data.auth, {path: '/'});
         cookies.set('token', res.data.token, {path: '/'});
         cookies.set('user', res.data.username, {path: '/'});
-        history.push(`${PATH_DASHBOARD}`);
+        auth.login(()=>{
+            history.push(`${PATH_DASHBOARD}`);
+        });
     };
 
     return(

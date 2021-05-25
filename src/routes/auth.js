@@ -1,15 +1,18 @@
+import Cookie from 'universal-cookie';
+
 class Auth{
     constructor(){
-        const auth = true;
-        if(auth){
+        const cookies = new Cookie();
+        if (cookies.get('auth')) {
             this.authenticated = true;
         }else{
             this.authenticated = false;
-        };
+        }
     };
 
-    lolgin(cb){
-        if(auth){
+    login(cb){
+        const cookies = new Cookie();
+        if (cookies.get('auth')) {
             this.authenticated = true;
         }
         cb();
