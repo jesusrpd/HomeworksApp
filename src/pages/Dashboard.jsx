@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { ReactComponent as TooltipIcon } from "../assets/SVG/tooltip.svg";
 import Homeworks from '../components/Homeworks';
 import Cookie from 'universal-cookie';
 import axios from 'axios';
 import {PATH_API} from '../routes/paths.routes.js';
+import Tooltip from "../components/Tooltip";
 
 const Dashboard = () => {
 
@@ -74,11 +74,11 @@ const Dashboard = () => {
 
     return (
         <>
-            <div className="flex align-middle justify-around my-5">
+            <div className="flex items-center justify-around my-5">
                 <h2 className="text-6xl m-14 text-green-600 font-black ">
                     ¡Welcome {username}!!
                 </h2>
-                <TooltipIcon width="100px" />
+                <Tooltip/>
             </div>
             <div className="grid grid-cols-2 w-full gap-4 mt-20">
                 <Homeworks 
