@@ -5,7 +5,7 @@ import auth from '../routes/auth';
 import {PATH_HOME} from '../routes/paths.routes';
 import {useHistory} from 'react-router-dom';
 
-const Tooltip = () => {
+const Tooltip = ({editName}) => {
     let history = useHistory();
     const tooltip = document.querySelector("#tooltip");
 
@@ -41,7 +41,7 @@ const Tooltip = () => {
                 <p onClick={handleClick} className="cursor-pointer hover:bg-green-400 p-4 text-white text-center">
                     Cerrar sesión
                 </p>
-                <p className="cursor-pointer hover:bg-green-400 p-4 text-white text-center">
+                <p onClick={editName} className="cursor-pointer hover:bg-green-400 p-4 text-white text-center">
                     Cambiar nombre
                 </p>
             </span>
