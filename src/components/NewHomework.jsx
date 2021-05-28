@@ -9,7 +9,7 @@ const NewHomework = ({ add, handleChange, error }) => (
                         type="text"
                         onChange={handleChange}
                         name="homework"
-                        className="bg-gray-200 border-none w-full rounded-xl focus:ring-0 focus:outline-none"
+                        className="bg-gray-300 border-none w-full rounded-xl focus:ring-0 focus:outline-none"
                     />
                     <p className="text-red-400">
                         {error ? "write the name homework" : null}

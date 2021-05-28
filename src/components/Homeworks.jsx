@@ -3,7 +3,7 @@ import ButtonHomework from "../components/ButtonHomework";
 import NewHomework from '../components/NewHomework';
 import HomeworkList from '../components/HomeworkList';
 
-const Homeworks = ({homeworks, handleDelete, handleChange, add, error, addHomework, handleAdd}) => {
+const Homeworks = ({homeworks, handleDelete, handleChange, add, error, addHomework, handleAdd, loading}) => {
 
     return (
         <div className="flex flex-col">
@@ -17,6 +17,7 @@ const Homeworks = ({homeworks, handleDelete, handleChange, add, error, addHomewo
                 </thead>
                 <tbody>
                     <HomeworkList
+                        loading={loading}
                         homeworks={homeworks}
                         handleDelete={handleDelete}
                     />

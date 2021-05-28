@@ -4,16 +4,24 @@ import Cookie from "universal-cookie";
 import axios from "axios";
 import { PATH_API } from "../routes/paths.routes.js";
 import Tooltip from "../components/Tooltip";
+import Modal from "../components/Modal";
+import useHomeworks from "../hooks/useHomeworks";
 
 const Dashboard = () => {
-    // const cookies = new Cookie();
     const [username, setUsername] = useState("");
     const [newUser, setNewUser] = useState("");
     const [add, setAdd] = useState(false);
     const [newHomework, setNewHomework] = useState("");
     const [error, setError] = useState(false);
-    const [homeworks, setHomeworks] = useState([]);
     const [editName, setEditName] = useState(false);
+    const [modal, setModal] = useState(false);
+
+    const { homeworks, loading } = useHomeworks();
+
+    useEffect(() => {
+        const cookies = new Cookie();
+        setUsername(cookies.get("user"));
+    }, []);
 
     const getHomeworks = async () => {
         const cookies = new Cookie();
@@ -24,16 +32,8 @@ const Dashboard = () => {
             },
         });
         setHomeworks(res.data);
+        setLoading(false);
     };
-
-    useEffect(() => {
-        getHomeworks();
-    }, []);
-
-    useEffect(() => {
-        const cookies = new Cookie();
-        setUsername(cookies.get("user"));
-    }, []);
 
     const handleDelete = async (h) => {
         const cookies = new Cookie();
@@ -90,8 +90,7 @@ const Dashboard = () => {
 
     const handleConfirm = async () => {
         const cookies = new Cookie();
-        cookies.remove("user", { path: "/" });
-        const res = await axios.post(
+        await axios.post(
             `${PATH_API}/user/username`,
             { username: newUser },
             {
@@ -101,12 +100,17 @@ const Dashboard = () => {
                 },
             }
         );
-        cookies.set('user', res.data.username, {path: '/'});
-        window.location.href = '/dashboard';
+        setEditName(!editName);
+        setModal(!modal);
+    };
+
+    const handleModal = () => {
+        setModal(!modal);
     };
 
     return (
-        <>
+        <div className="h-screen">
+            {modal ? <Modal onClick={handleModal} /> : null};
             <div className="flex items-center justify-around my-5">
                 <h2 className="text-6xl m-14 text-green-600 font-black flex items-center">
                     <p className="inline mr-2">¡Welcome</p>{" "}
@@ -138,6 +142,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 w-full gap-4 mt-20">
                 <Homeworks
                     homeworks={homeworks}
+                    loading={loading}
                     handleDelete={handleDelete}
                     add={add}
                     error={error}
@@ -149,7 +154,7 @@ const Dashboard = () => {
                     Homeworks: {homeworks.length}
                 </p>
             </div>
-        </>
+        </div>
     );
 };
 
