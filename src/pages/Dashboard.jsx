@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Homeworks from "../components/Homeworks";
 import Cookie from "universal-cookie";
-import axios from "axios";
-import { PATH_API } from "../routes/paths.routes.js";
 import Tooltip from "../components/Tooltip";
 import Modal from "../components/Modal";
-import useHomeworks from "../hooks/useHomeworks";
+import homeworksServices from "../services/homeworks";
+import userServices from "../services/user";
 
 const Dashboard = () => {
     const [username, setUsername] = useState("");
@@ -15,53 +14,42 @@ const Dashboard = () => {
     const [error, setError] = useState(false);
     const [editName, setEditName] = useState(false);
     const [modal, setModal] = useState(false);
+    const [homeworks, setHomeworks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const { homeworks, loading } = useHomeworks();
+    useEffect(() => {
+        homeworksServices.getHomeworks().then((homeworks) => {
+            setLoading(false);
+            setHomeworks(homeworks);
+        });
+    }, []);
 
     useEffect(() => {
         const cookies = new Cookie();
         setUsername(cookies.get("user"));
     }, []);
 
-    const getHomeworks = async () => {
-        const cookies = new Cookie();
-        const res = await axios.get(`${PATH_API}/homeworks`, {
-            headers: {
-                authorization: `bearer ${cookies.get("token")}`,
-                "If-Modified-Since": new Date(),
-            },
-        });
-        setHomeworks(res.data);
-        setLoading(false);
-    };
-
     const handleDelete = async (h) => {
-        const cookies = new Cookie();
-        await axios.delete(`${PATH_API}/homeworks/${h}`, {
-            headers: {
-                authorization: `bearer ${cookies.get("token")}`,
-                "If-Modified-Since": new Date(),
-            },
-        });
-        getHomeworks();
+        homeworksServices
+            .deleteHomework(h)
+            .then(() =>
+                homeworksServices
+                    .getHomeworks()
+                    .then((homeworks) => setHomeworks(homeworks))
+            );
     };
 
     const handleAdd = () => setAdd(!add);
 
     const addHomework = async () => {
         if (newHomework !== "") {
-            const cookies = new Cookie();
-            axios.post(
-                `${PATH_API}/homeworks`,
-                { name: newHomework },
-                {
-                    headers: {
-                        authorization: `bearer ${cookies.get("token")}`,
-                        "If-Modified-Since": new Date(),
-                    },
-                }
-            );
-            getHomeworks();
+            homeworksServices
+                .addHomework(newHomework)
+                .then(
+                    homeworksServices
+                        .getHomeworks()
+                        .then((homeworks) => setHomeworks(homeworks))
+                );
             setNewHomework("");
             setAdd(!add);
         } else {
@@ -89,19 +77,10 @@ const Dashboard = () => {
     };
 
     const handleConfirm = async () => {
-        const cookies = new Cookie();
-        await axios.post(
-            `${PATH_API}/user/username`,
-            { username: newUser },
-            {
-                headers: {
-                    authorization: `bearer ${cookies.get("token")}`,
-                    "If-Modified-Since": new Date(),
-                },
-            }
-        );
-        setEditName(!editName);
-        setModal(!modal);
+        userServices.setUser(newUser).then(() => {
+            setEditName(!editName);
+            setModal(!modal);
+        });
     };
 
     const handleModal = () => {

@@ -4,11 +4,15 @@ const HomeworkList = ({ homeworks, handleDelete, loading }) => (
     <>
         {homeworks.map((h, i) =>
             loading ? (
-                <p className="p-5 w-full bg-green-600 rounded-md animate-pulse"></p>
+                <tr key={i}>
+                    <td>
+                        <p className="p-2 m-4 bg-green-600 rounded-md animate-pulse"></p>
+                    </td>
+                </tr>
             ) : (
                 <tr
                     onDoubleClick={() => handleDelete(h._id)}
-                    className="hover:bg-green-600 hover:text-white ease-in-out"
+                    className="hover:bg-green-600 transition duration-300 hover:text-white ease-in-out"
                     key={i}>
                     <td className="border p-4 border-green-600">{h.name}</td>
                 </tr>
