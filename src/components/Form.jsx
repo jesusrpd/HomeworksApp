@@ -2,22 +2,13 @@ import React, { useState } from 'react';
 import Login from './Login';
 import SignUp from './SignUp';
 
-const Form = ()=>{
-    const [form, setForm] = useState(false);
-
-    const viewForm = v =>{
-        if (form) {
-            setForm('signup');
-        }else{
-            setForm('login');
-        };
-    };
+const Form = ({handleForm, form})=>{
 
     return(
         <>
         {form
-            ?<Login onClick={viewForm}/>
-            :<SignUp onClick={viewForm}/>
+            ?<Login view={handleForm}/>
+            :<SignUp view={handleForm}/>
         }
         </>
     );

@@ -6,7 +6,7 @@ import axios from "axios";
 import { PATH_API, PATH_DASHBOARD } from "../routes/paths.routes";
 import Cookie from "universal-cookie";
 import { useHistory } from "react-router-dom";
-import auth from '../routes/auth';
+import auth from "../routes/auth";
 
 const schema = yup.object().shape({
     username: yup.string().required("username required"),
@@ -14,7 +14,7 @@ const schema = yup.object().shape({
     password: yup.string().required("passsword required"),
 });
 
-const SignUp = ({ onClick }) => {
+const SignUp = ({ view }) => {
     const {
         register,
         handleSubmit,
@@ -70,9 +70,7 @@ const SignUp = ({ onClick }) => {
                     <span className="ml-2 text-white">Keep session open</span>
                 </div>
                 <p
-                    onClick={() => {
-                        onClick("login");
-                    }}
+                    onClick={view}
                     className="text-white underline cursor-pointer">
                     Do you already have an account?
                 </p>
