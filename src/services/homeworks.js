@@ -14,17 +14,19 @@ const getHomeworks = async () => {
 };
 
 const deleteHomework = async h => {
-    await axios.delete(`${PATH_API}/homeworks/${h}`, {
+    const res = await axios.delete(`${PATH_API}/homeworks/${h}`, {
         headers: {
             authorization: `bearer ${cookies.get("token")}`,
             "If-Modified-Since": new Date(),
         },
     });
+
+    return res.data;
 };
 
 
 const addHomework = async newHomework =>{
-    await axios.post(
+    const res = await axios.post(
         `${PATH_API}/homeworks`,
         { name: newHomework },
         {
@@ -34,6 +36,8 @@ const addHomework = async newHomework =>{
             },
         }
     );
+
+    return res.data;
 };
 
 export default { getHomeworks , deleteHomework, addHomework};

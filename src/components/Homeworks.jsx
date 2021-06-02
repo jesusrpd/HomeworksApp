@@ -1,10 +1,9 @@
 import React from "react";
 import ButtonHomework from "../components/ButtonHomework";
-import NewHomework from '../components/NewHomework';
-import HomeworkList from '../components/HomeworkList';
+import NewHomework from "../components/NewHomework";
+import HomeworkList from "../components/HomeworkList";
 
-const Homeworks = ({homeworks, handleDelete, handleChange, add, error, addHomework, handleAdd, loading}) => {
-
+const Homeworks = () => {
     return (
         <div className="flex flex-col">
             <table className="table-auto w-6/12 m-auto border border-collapse shadow-2xl border-green-600 nth-child:text-white nth-child:bg-red-400 transform :rotate-45">
@@ -16,23 +15,11 @@ const Homeworks = ({homeworks, handleDelete, handleChange, add, error, addHomewo
                     </tr>
                 </thead>
                 <tbody>
-                    <HomeworkList
-                        loading={loading}
-                        homeworks={homeworks}
-                        handleDelete={handleDelete}
-                    />
-                    <NewHomework
-                        add={add}
-                        handleChange={handleChange}
-                        error={error}
-                    />
+                    <HomeworkList />
+                    <NewHomework />
                 </tbody>
             </table>
-            <ButtonHomework
-                add={add}
-                addHomework={addHomework}
-                handleAdd={handleAdd}
-            />
+            <ButtonHomework />
         </div>
     );
 };
