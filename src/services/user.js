@@ -4,7 +4,7 @@ import { PATH_API } from "../routes/paths.routes";
 const cookies = new Cookie();
 
 const setUser = async (newUser) => {
-    await axios.post(
+    const res = await axios.post(
         `${PATH_API}/user/username`,
         { username: newUser },
         {
@@ -14,6 +14,9 @@ const setUser = async (newUser) => {
             },
         }
     );
+
+    return res.data;
 };
+
 
 export default { setUser };

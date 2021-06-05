@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Modal from "../components/Modal";
 import Tooltip from "../components/Tooltip";
-import { getUsername } from "../reducers/usernameReducer";
-import {useSelector, useDispatch} from 'react-redux';
+import { getUsername, newUsername } from "../reducers/usernameReducer";
+import { useSelector, useDispatch } from "react-redux";
 import { handleEdit } from "../reducers/editReducers";
+import Cookie from "universal-cookie";
 
 const Welcome = () => {
     const dispatch = useDispatch();
@@ -15,6 +16,15 @@ const Welcome = () => {
         dispatch(getUsername());
     }, [dispatch]);
 
+    const handleUsername = e => {
+        e.preventDefault();
+        const cookies = new Cookie();
+        cookies.remove("user", { path: "/" });
+        dispatch(newUsername(e.target.new.value));
+        dispatch(handleEdit("NOTUSER"));
+        cookies.set("user", e.target.new.value ,{path: "/"});
+    };
+
     return (
         <>
             {modal ? (
@@ -25,12 +35,15 @@ const Welcome = () => {
                     <h2 className="text-6xl m-14 text-green-600 font-black flex items-center">
                         <p className="inline mr-2">¡Welcome</p>{" "}
                         {user ? (
-                            <div>
+                            <form onSubmit={handleUsername}>
                                 <input
+                                    name="new"
                                     className="bg-gray-200 border-none rounded-xl mt-4 mx-4 focus:ring-0 focus:outline-none"
                                     type="text"
                                 />
-                                <button className="bg-green-600 text-white text-xl p-1 m-1 rounded-md hover:bg-green-400">
+                                <button
+                                    type="submit"
+                                    className="bg-green-600 text-white text-xl p-1 m-1 rounded-md hover:bg-green-400">
                                     Confirm
                                 </button>
                                 <button
@@ -40,7 +53,7 @@ const Welcome = () => {
                                     }>
                                     Cancel
                                 </button>
-                            </div>
+                            </form>
                         ) : (
                             username
                         )}
